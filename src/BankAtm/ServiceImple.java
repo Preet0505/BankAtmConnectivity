@@ -2,6 +2,7 @@ package BankAtm;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
@@ -82,7 +83,7 @@ public class ServiceImple implements Service {
 			Scanner sc = new Scanner(System.in);
 			System.out.println("Enter id: ");
 			int id = sc.nextInt();
-			System.out.println("Enter the Last-name: ");
+			System.out.println("Enter the First-name: ");
 			String firstNmae = sc.next();
 			System.out.println("Enter the Last-name: ");
 			String last_name = sc.next();
@@ -99,5 +100,63 @@ public class ServiceImple implements Service {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public void getallUser() {
+		// TODO Auto-generated method stub
+//		Scanner All_acc = new Scanner(System.in);
+		System.out.println("Getting all user detail: ");
+//		System.out.println("id First_name Last_Name City Mobile_no Account_No");
+//		String query = "SELECT * FROM bank";
+		try {
+		ResultSet resultSet = statement.executeQuery("SELECT * FROM bank");
+		while(resultSet.next()){
+			System.out.println(resultSet.getInt("id") + " " + resultSet.getString("First_Name") + " " + resultSet.getString("Last_Name") + " " + 
+					resultSet.getString("City") + " " + resultSet.getInt("Mobile_no") + " " + resultSet.getInt("Account_No") + " " + resultSet.getString("Pass_word"));
+		}
+		connection.close();
+		resultSet.close();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}	
+	
+	public void OneUseraccount() {
+		try {
+		Scanner ou = new Scanner(System.in);
+		System.out.println("Enter account no for details: ");
+		int oneuseracc = ou.nextInt();
+		
+			ResultSet user = statement.executeQuery("SELECT * FROM bank WHERE Account_No='" + oneuseracc + "'");
+			while(user.next()) {
+				System.out.println(user.getInt("id") + " " + user.getString("First_Name") + " " + user.getString("Last_Name") + " " + 
+						user.getString("City") + " " + user.getInt("Mobile_no") + " " + user.getInt("Account_No") + " " + user.getString("Pass_word"));
+			}
+			connection.close();
+			user.close();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@Override
+	public void deleteAccount() {
+		// TODO Auto-generated method stub
+		Scanner delete = new Scanner(System.in);
+		System.out.println("Deleting the account: ");
+		int delete_Acc = delete.nextInt();
+		try {
+			statement.executeUpdate("DELETE bank WHERE Account_No ="+delete_Acc+" ");
+		 connection.close();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+
 
 }
